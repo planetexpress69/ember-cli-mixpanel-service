@@ -5,10 +5,12 @@ export function initialize(appInstance) {
     if (typeof(appInstance.lookup) === 'undefined') {
       appInstance = appInstance.container;
     }
-    let router = appInstance.lookup('router:main');
-    router.on('didTransition', function() {
-      appInstance.lookup('service:mixpanel').trackPageView(this.get('url'));
-    });
+    if (Config.mixpanel.trackPageviews) {
+      let router = appInstance.lookup('router:main');
+      router.on('didTransition', function() {
+        appInstance.lookup('service:mixpanel').trackPageView(this.get('url'));
+      });
+    }
   }
 }
 
